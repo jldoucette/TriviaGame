@@ -11,11 +11,14 @@ $(document).ready(function() {
 	var sequence;
 	var correct=0;
 	var incorrect=0;
+	var notAnswered=0;
 	var arrRandomSequence = [];
 	var arrRoundQuestions=[];
 	var arrRoundAnswerOptions=[];
 	var correctAnswerIndex;
 	var questionToAsk;
+	
+
 	function triviaQuestion(question,answer,moneyImage,personImage) {
 		this.question=question;
 		this.answer=answer;
@@ -161,20 +164,40 @@ $(document).ready(function() {
 			answerOptions.append('<h4 '+ 'id="ans">' + answerContent +'<h4>');
 			console.log("For Loop: " +i + " " + answerContent);
 			console.log("Finished appending to answers");
+			
+}
+}
+getAnswer();
 
-			// setTimeout(tenSeconds,5000);
+function getAnswer() {
+				setTimeout(tenSeconds,5000);
 		$("#answers").click(function(event){
+			
 			var clickedValue=$(event.target).text();
 			console.log("Clicked " + clickedValue);
 			if (clickedValue==arrRoundAnswerOptions[correctAnswerIndex]) {
 				console.log("Correct Answer!!! " + clickedValue + arrRoundAnswerOptions[correctAnswerIndex]);
+				clearTimeout(tenSeconds);
 				correct++;
+				console.log("Correct Answers: " + correct);
 			}
-			else console.log("WRONG Answer!!! " + clickedValue + arrRoundAnswerOptions[correctAnswerIndex]);
+			else {
+				console.log("WRONG Answer!!! " + clickedValue + arrRoundAnswerOptions[correctAnswerIndex]);
+				clearTimeout(tenSeconds);
 				incorrect++;
-		});
+				console.log("Incorrect Answer: " + incorrect);
+			}
+			
+		
+			});
+		
+		function tenSeconds(){
+			notAnswered++;
+			console.log("Not answered: " + notAnswered);
 		}
+	
 	}
+
 
 	gameQuestions();
 });
