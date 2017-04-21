@@ -1,0 +1,26 @@
+h1 {
+	
+}
+
+body {
+	font-family:helvetica, serif;
+	background-image: url("../images/oldromancoin.jpg");
+}
+#question {
+	background-color:beige;
+	font-size:150%;
+}
+
+#answers {
+	background-color:lightgrey;
+	
+}
+
+#header {
+	font-size:150%;
+	color:darkblue;
+	background-color:lightblue;
+	border-radius: 25px;
+	padding:10px;
+	text-align:center;
+}
