@@ -3,7 +3,7 @@ h1 {
 }
 
 body {
-	font-family:helvetica, serif;
+	font-family: 'Playfair Display SC', helvetica, serif;
 	background-image: url("../images/oldromancoin.jpg");
 }
 #question {
@@ -16,6 +16,11 @@ body {
 	
 }
 
+#imgMoney {
+	height:150px;
+	width:auto;
+}
+
 #header {
 	font-size:150%;
 	color:darkblue;
@@ -26,18 +31,18 @@ body {
 }
 
 #answer-result {
-	background-color:grey;
+  	background:grey;
 	color:white;
-	
 }
 
 #timerdisplay {
-	background-color:beige;
+  	background:grey;
 	color:black;
 	
 }
 
 #results {
+  	text-align:center;
 	background-color:grey;
 	color:white;
 
