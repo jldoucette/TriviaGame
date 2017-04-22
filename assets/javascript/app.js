@@ -17,14 +17,19 @@ $(document).ready(function() {
 	var arrRoundAnswerOptions=[];
 	var correctAnswerIndex;
 	var questionToAsk;
+	var answered=false;
+	var answerWaitTimer;
+	var roundNumber=0;
+	var answerOptions;
 	
 
-	function triviaQuestion(question,answer,moneyImage,personImage) {
+		function triviaQuestion(question,answer,moneyImage,personImage) {
 		this.question=question;
 		this.answer=answer;
 		this.moneyImage=moneyImage;
 		this.personImage=personImage;
-	}
+		}
+	
 	var question0=new triviaQuestion("Who is on the US Penny?", "Abraham Lincoln", "/assets/images/penny.png", "/assets/images/AbrahamLincoln.jpg");
 	var question1=new triviaQuestion("Who is on the US Nickel?", "Thomas Jefferson", "/assets/images/nickel.png", "/assets/images/ThomasJefferson.jpg" );
 	var question2=new triviaQuestion("Who is on the US Dime", "Frankin Delano Roosevelt", "/assets/images/dime.gif", "/assets/images/FDR.jpg" );
@@ -43,46 +48,47 @@ $(document).ready(function() {
 		    if(arrRandomSequence.indexOf(randomNumber) > -1) continue;
 		    arrRandomSequence[arrRandomSequence.length] = randomNumber;
 		}
-		console.log("Random Sequence Result: " + arrRandomSequence);
+		// console.log("Random Sequence Result: " + arrRandomSequence);
 	}
 
 	function wrongAnswerOptions() {
+		arrCurrentQuestionWrongOptions=[];
 
 		for(var i = 0; i < numWrongAnswers; i++) {
 	        var uniqueNum=true;
 	        var n = Math.floor(Math.random()*arrQuestionOptions.length);
-	        console.log("Random Index Number is: " + n);
+	        // console.log("Random Index Number is: " + n);
 	        var randomAnswerToCheck=arrQuestionOptions[n];
-	        console.log("Loop " + i + " for Questions Options RATC: " + randomAnswerToCheck);
+	        // console.log("Loop " + i + " for Questions Options RATC: " + randomAnswerToCheck);
 	            
 		          
 	        for(var j = 0; j<arrCurrentQuestionWrongOptions.length; j++) {
 	        	var currentWrongAnswer=arrCurrentQuestionWrongOptions[j];
-	        	console.log("Value of j is: " + j);
-	        	console.log("Value of currentWrongAnswer is: " + currentWrongAnswer);
-	        	console.log("arrCurrentQuestionWrongOptions length is " + arrCurrentQuestionWrongOptions.length);
+	        	// console.log("Value of j is: " + j);
+	        	// console.log("Value of currentWrongAnswer is: " + currentWrongAnswer);
+	        	// console.log("arrCurrentQuestionWrongOptions length is " + arrCurrentQuestionWrongOptions.length);
 	        	// console.log("arrCurrentQuestionWrongOptions index is " + j);
 	        
-	        	console.log("arrCurrentQWrong Loop: "+ j);
-	        	console.log("Value of randomAnswer to Check: " + randomAnswerToCheck + " Value of Current Question Wrong Answer is " + currentWrongAnswer);
+	        	// console.log("arrCurrentQWrong Loop: "+ j);
+	        	// console.log("Value of randomAnswer to Check: " + randomAnswerToCheck + " Value of Current Question Wrong Answer is " + currentWrongAnswer);
 	             if (randomAnswerToCheck===currentWrongAnswer) {	
 	                	
-	                	console.log("DUPLICATE VALUE FOUND Value in array: " + currentWrongAnswer);
+	                	// console.log("DUPLICATE VALUE FOUND Value in array: " + currentWrongAnswer);
 	                    uniqueNum = false;
 	                    // i--;
 	                }  
 			}
 
 	    	if (uniqueNum) {
-	    		console.log("value of uniqueNum: " + uniqueNum);
-	    		console.log("RATC to be pushed to array: " + randomAnswerToCheck);
+	    		// console.log("value of uniqueNum: " + uniqueNum);
+	    		// console.log("RATC to be pushed to array: " + randomAnswerToCheck);
 	        	arrCurrentQuestionWrongOptions.push(randomAnswerToCheck);
-	        	console.log("WrongQArray " + arrCurrentQuestionWrongOptions); 
-	        	console.log("CurrentValue of CurrentQuestion and index " + currentWrongAnswer);          		
+	        	// console.log("WrongQArray " + arrCurrentQuestionWrongOptions); 
+	        	// console.log("CurrentValue of CurrentQuestion and index " + currentWrongAnswer);          		
 			}
 	        else
 	        {
-	        	console.log("Everything failed");
+	        	// console.log("Everything failed");
 	            i--;
 	        }
 	        		
@@ -92,116 +98,205 @@ $(document).ready(function() {
 	    	wrongAnswer3value=arrCurrentQuestionWrongOptions[2];
 
 	      
-	    	console.log("Wrong Answer 1: " + wrongAnswer1value);
-	    	console.log("Wrong Answer 2: " + wrongAnswer2value);
-	    	console.log("Wrong Answer 3: " + wrongAnswer3value);
+	    	// console.log("Wrong Answer 1: " + wrongAnswer1value);
+	    	// console.log("Wrong Answer 2: " + wrongAnswer2value);
+	    	// console.log("Wrong Answer 3: " + wrongAnswer3value);
 
 
-	    }
-	}
+	    } //End wrongAnswerOptions for loop
+	} //End wrongAnswerOptions
 	    
 
 	      
 	wrongAnswerOptions();
 
 	function gameQuestions() {
-		console.log("Start wrongAnswerOptions");
+		// console.log("Start wrongAnswerOptions");
 		getRandomSequence(numberTotalQuestions);
-		console.log("Return from getRandomSequence");
-		for (var i=0; i<numberTotalQuestions;i++) {
-			arrRoundQuestions.push(arrRandomSequence[i]);
-			console.log("Round Question Sequence " + arrRoundQuestions);
+		// console.log("Return from getRandomSequence");
+		for (var k=0; k<numberTotalQuestions;k++) {
+			arrRoundQuestions.push(arrRandomSequence[k]);
+			// console.log("Round Question Sequence " + arrRoundQuestions);
 
 		}
 		askQuestion();
 	}
 
 	function askQuestion() {
-		console.log("Start askQuestion");
-		// setTimeout(tenSeconds,10000);
-		for (i=0;i<numberGameQuestions;i++) {
-			// setTimeout(tenSeconds,5000);
-			var questionIndex=arrRoundQuestions[i];
-			questionToAsk=arrAllQuestions[questionIndex];
-			console.log(questionToAsk);
-			var questionText=questionToAsk.question;
-			console.log(questionText);
-			var questionContent=questionText;
-			console.log("QuestionContent: " + questionContent);
-
-			var questionAnswers=$("#question");
-			console.log("questionAnswers" + questionAnswers);
-			var questionAnswersValue=questionAnswers.html("<h3>" + questionContent+"</h3>");
-			console.log("questionAnswersValue: "+ questionAnswersValue);
-			questionAnswers.append(questionAnswersValue);
-			console.log("Finished appending to site");
-		}
-	// }
-
-
-	// answerChoices();
-
-	// function answerChoices() {
-		console.log("answerChoices section Start " + questionToAsk.answer);
-		arrCurrentQuestionWrongOptions.push(questionToAsk.answer);
-		console.log(arrCurrentQuestionWrongOptions);
-		arrRandomSequence=[];
-		getRandomSequence(numberOfAnswers);
-		console.log("back from getRandomSequence" + arrRandomSequence);
-		for (var i=0; i<numberOfAnswers;i++) {
-			sequenceNum=arrRandomSequence[i];
-			console.log(numberOfAnswers);
-			console.log(sequenceNum);
-			arrRoundAnswerOptions.push(arrCurrentQuestionWrongOptions[sequenceNum]);
-			console.log(arrCurrentQuestionWrongOptions[sequenceNum]);
-			console.log(arrRoundAnswerOptions);
-			correctAnswerIndex=arrRoundAnswerOptions.indexOf(questionToAsk.answer);
-			console.log(correctAnswerIndex);
-
-			var answerOptionsValue;
-			var answerOptions=$("#answers");
-			var answerContent=arrRoundAnswerOptions[i];
-			answerOptions.append('<h4 '+ 'id="ans">' + answerContent +'<h4>');
-			console.log("For Loop: " +i + " " + answerContent);
-			console.log("Finished appending to answers");
+		// console.log("Start askQuestion");
 			
-}
-}
-getAnswer();
 
-function getAnswer() {
-				setTimeout(tenSeconds,5000);
-		$("#answers").click(function(event){
-			
-			var clickedValue=$(event.target).text();
-			console.log("Clicked " + clickedValue);
-			if (clickedValue==arrRoundAnswerOptions[correctAnswerIndex]) {
-				console.log("Correct Answer!!! " + clickedValue + arrRoundAnswerOptions[correctAnswerIndex]);
-				clearTimeout(tenSeconds);
-				correct++;
-				console.log("Correct Answers: " + correct);
-			}
-			else {
-				console.log("WRONG Answer!!! " + clickedValue + arrRoundAnswerOptions[correctAnswerIndex]);
-				clearTimeout(tenSeconds);
-				incorrect++;
-				console.log("Incorrect Answer: " + incorrect);
-			}
-			
-		
-			});
-		
-		function tenSeconds(){
-			notAnswered++;
-			console.log("Not answered: " + notAnswered);
-		}
+				console.log("Round Number " + roundNumber);
+		// for (i=0;i<numberGameQuestions;i++) {
 	
+				var questionIndex=arrRoundQuestions[roundNumber];
+				questionToAsk=arrAllQuestions[questionIndex];
+				console.log(questionToAsk);
+				var questionText=questionToAsk.question;
+				// console.log(questionText);
+				var questionContent=questionText;
+				console.log("QuestionContent: " + questionContent);
+
+				var questionAnswers=$("#question");
+				// console.log("questionAnswers" + questionAnswers);
+				var questionAnswersValue=questionAnswers.html("<h3>" + questionContent+"</h3>");
+				// console.log("questionAnswersValue: "+ questionAnswersValue);
+				questionAnswers.append(questionAnswersValue);
+				// console.log("Finished appending to site");
+		
+				console.log("answerChoices section Start " + questionToAsk.answer);
+				arrCurrentQuestionWrongOptions.push(questionToAsk.answer);
+				console.log("PUSHED " + questionToAsk.answer);
+				console.log(arrCurrentQuestionWrongOptions);
+				arrRandomSequence=[];
+				getRandomSequence(numberOfAnswers);
+				// console.log("back from getRandomSequence" + arrRandomSequence);
+					
+					for (var j=0; j<numberOfAnswers;j++) {
+						sequenceNum=arrRandomSequence[j];
+						// console.log(numberOfAnswers);
+						// console.log("Current Sequence Number: " + sequenceNum);
+						arrRoundAnswerOptions.push(arrCurrentQuestionWrongOptions[sequenceNum]);
+						// console.log(arrCurrentQuestionWrongOptions[sequenceNum]);
+						// console.log("Array of answer Options " +arrRoundAnswerOptions);
+						correctAnswerIndex=arrRoundAnswerOptions.indexOf(questionToAsk.answer);
+						console.log(correctAnswerIndex);
+
+						var answerOptionsValue;
+						var answerOptions=$("#answers");
+						var answerContent=arrRoundAnswerOptions[j];
+						answerOptions.append('<h4 '+ 'id="ans">' + answerContent +'<h4>');
+						// console.log("For Loop: " + j + " " + answerContent);
+						// console.log("Finished appending to answers");
+					}
+					answered=false;
+			
+			questionTimerStart();
+			// getAnswer();
+
+	
+			// getAnswer();
+	
+		// } // End question for loop
+	} //End askQuestion Function 
+// getAnswer();
+
+	function getAnswer() {
+			$("#answers").click(function(event){
+			
+				var clickedValue=$(event.target).text();
+				// console.log("Clicked " + clickedValue);
+				 $("#answers").off("click");
+						if (clickedValue==arrRoundAnswerOptions[correctAnswerIndex]) {
+							
+							console.log("Correct Answer!!! " + clickedValue + arrRoundAnswerOptions[correctAnswerIndex]);
+							questionTimerStop();
+							answered=true;
+							correct++;
+						
+
+							console.log("Correct Answers: " + correct);
+							}
+
+						else {
+							console.log("WRONG Answer!!! " + clickedValue + arrRoundAnswerOptions[correctAnswerIndex]);
+							questionTimerStop();
+							answered=true;
+							incorrect++;
+					
+							console.log("Incorrect Answer: " + incorrect);
+							}
+							// console.log("RoundNumber before if check " + roundNumber + " numberGameQuestions" + numberGameQuestions);
+							if (roundNumber==numberGameQuestions) {
+								console.log("GAME OVER");
+								gameEndStats();
+							}
+							else {
+								$("#answers").empty();
+								arrRoundAnswerOptions=[];
+								wrongAnswerOptions();
+								askQuestion();
+							}
+
+			});
+		}
+
+
+	function questionTimerStart() {
+    answerWaitTimer = setTimeout(tenSeconds,5000);
+    getAnswer();
 	}
+
+	function questionTimerStop() {
+    clearTimeout(answerWaitTimer);
+    roundNumber++;
+		}
+
+		function tenSeconds(){
+					$("#answers").off("click");
+					if(answered) {
+						console.log("Answered= " + answered);
+					}
+					else {
+						notAnswered++;
+						roundNumber++;
+						console.log("Answered= " + answered);
+						console.log("Not Answered= " + notAnswered);
+					}
+						// console.log("RoundNumber before if check " + roundNumber + " numberGameQuestions" + numberGameQuestions);
+							if (roundNumber==numberGameQuestions) {
+								console.log("GAME OVER");
+								gameEndStats();
+							}
+							else {
+								$("#answers").empty();
+								arrRoundAnswerOptions=[];
+								wrongAnswerOptions();
+								askQuestion();
+							}
+		}
+
+		function gameEndStats() {
+			var resultsSection=$("#results");
+			var resultsCorrect=resultsSection.append("<h3>Correct: " + correct+"</h3>");
+			var resultsInCorrect=resultsSection.append("<h3>Incorrect: " + incorrect+"</h3>");
+			var resultsNotAnswered=resultsSection.append("<h3>Unanswered: " + notAnswered+"</h3>");
+			
+				
+
+			$("#results").html()
+		}
 
 
 	gameQuestions();
 });
-    // setTimeout(tenSeconds,5000);
-     // function tenSeconds() {
-     //     $("#time-left").html("<h2>About 5 Seconds Left!</h2>");
-     //    console.log("5 seconds left");
+// function getAnswer() {
+// 			answered=false;
+// 			questionTimerStart();
+
+// 		$("#answers").click(function(event){
+			
+// 			var clickedValue=$(event.target).text();
+// 			console.log("Clicked " + clickedValue);
+// 			 $("#answers").off("click");
+// 			if (clickedValue==arrRoundAnswerOptions[correctAnswerIndex]) {
+				
+// 				console.log("Correct Answer!!! " + clickedValue + arrRoundAnswerOptions[correctAnswerIndex]);
+// 				questionTimerStop();
+// 				answered=true;
+// 				correct++;
+// 				console.log("Correct Answers: " + correct);
+// 				}
+
+// 			else {
+// 				console.log("WRONG Answer!!! " + clickedValue + arrRoundAnswerOptions[correctAnswerIndex]);
+// 				questionTimerStop();
+// 				answered==true;
+// 				incorrect++;
+// 				console.log("Incorrect Answer: " + incorrect);
+// 				}
+// 			return;
+// 			});
+
+
+
