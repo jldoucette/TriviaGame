@@ -1,11 +1,12 @@
 $(document).ready(function() {
 	var numWrongAnswers=3;
-	var numberGameQuestions=3;
+	var numberGameQuestions=5;
 	var numberTotalQuestions=14;
 	var numberOfAnswers=4;
 	var arrQuestions=[];
 	var currentWrongAnswer;
 	var arrQuestionOptions=["Ulysses S Grant","Thomas Jefferson","Susan B Anthony","Sacagwea","John F Kennedy", "Abraham Lincoln", "Alexander Hamilton", "Andrew Jackson","Benjamin Franklin", "William Henry Harrison","Gerald Ford","Barack Obama", "Donald Trump", "George Bush", "George Washington","Jimmy Carter","Richard Nixon", "Bill Clinton","Ronald Reagan", "Harriet Tubman","John Quincy Adams", "Paul Revere", "Samuel Adams"];
+	var arrAdjQuestionOptions=["Ulysses S Grant","Thomas Jefferson","Susan B Anthony","Sacagwea","John F Kennedy", "Abraham Lincoln", "Alexander Hamilton", "Andrew Jackson","Benjamin Franklin", "William Henry Harrison","Gerald Ford","Barack Obama", "Donald Trump", "George Bush", "George Washington","Jimmy Carter","Richard Nixon", "Bill Clinton","Ronald Reagan", "Harriet Tubman","John Quincy Adams", "Paul Revere", "Samuel Adams"];
 	var arrQuestionOptionsTest=["Ulysses S Grant","Thomas Jefferson","Susan B Anthony","Sacagwea"];
 	var arrCurrentQuestionWrongOptions=[];
 	var sequence;
@@ -68,9 +69,9 @@ $(document).ready(function() {
 
 		for(var i = 0; i < numWrongAnswers; i++) {
 	        var uniqueNum=true;
-	        var n = Math.floor(Math.random()*arrQuestionOptions.length);
+	        var n = Math.floor(Math.random()*arrAdjQuestionOptions.length);
 	       
-	        var randomAnswerToCheck=arrQuestionOptions[n];
+	        var randomAnswerToCheck=arrAdjQuestionOptions[n];
 	  
 	            
 		          
@@ -82,7 +83,15 @@ $(document).ready(function() {
 	                	
 	                	console.log("DUPLICATE VALUE FOUND Value in array: " + currentWrongAnswer);
 	                    uniqueNum = false;
-	                }  
+	                } 
+	                //new test to remove dups 042217
+	             else if (currentWrongAnswer===questionToAsk.answer) {
+	             	console.log("DUPLICATE IN ARRAY_REAL ANSWER");
+	             	arrCurrentQuestionWrongOptions.splice(j,1);
+	             	console.log("****removed duplicate ****");
+	             	// arrCurrentQuestionWrongOptions.push("Millard Fillmore");
+	             	uniqueNum=false;
+	             }    
 			}
 
 	    	if (uniqueNum) {
@@ -92,7 +101,7 @@ $(document).ready(function() {
 	        {
 	            i--;
 	        }
-	        		
+		        		
 	           
 	     	wrongAnswer1value=arrCurrentQuestionWrongOptions[0];
 	    	wrongAnswer2value=arrCurrentQuestionWrongOptions[1];
@@ -115,14 +124,25 @@ $(document).ready(function() {
 				var questionIndex=arrRoundQuestions[roundNumber];
 				questionToAsk=arrAllQuestions[questionIndex];
 				var questionText=questionToAsk.question;
+				var questionRightAnswer=questionToAsk.answer;
+
 				questionAnswerImageOne=questionToAsk.personImage;
 				questionAnswerImageTwo=questionToAsk.moneyImage;
 				var questionContent=questionText;
 				var questionAnswers=$("#question");
 				var questionAnswersValue=questionAnswers.html("<h3>" + questionContent+"</h3>");
 				questionAnswers.append(questionAnswersValue);
+					for(m=0;m<arrAdjQuestionOptions.length;m++) { 
+						var checkAdjArrayItem=arrAdjQuestionOptions[m];
+						if(questionRightAnswer===checkAdjArrayItem) {
+								arrAdjQuestionOptions.splice(m,1);
+								console.log("Removed " + questionToAsk.answer + " from adjusted array");
+						}
+					}
 				wrongAnswerOptions();
 				arrCurrentQuestionWrongOptions.push(questionToAsk.answer);
+				arrQuestionOptions=arrAdjQuestionOptions;
+				console.log("Replaced Array: " + arrAdjQuestionOptions);
 				arrRandomSequence=[];
 				getRandomSequence(numberOfAnswers);
 					
