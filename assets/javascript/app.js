@@ -27,8 +27,6 @@ $(document).ready(function() {
 	var questionAnswerImageTwo;
 	var correctAnswerSymbol="assets/images/rightanswercheck.gif";
 	
-
-
 		function triviaQuestion(question,answer,moneyImage,personImage) {
 		this.question=question;
 		this.answer=answer;
@@ -53,8 +51,6 @@ $(document).ready(function() {
 
 	var arrAllQuestions=[question0,question1,question2,question3,question4,question5,question6,question7,question8,question9,question10,question11,question12,question13];
 
-
-
 	function getRandomSequence(sequence){
 		while(arrRandomSequence.length < sequence){
 		    var randomNumber = Math.floor(Math.random()*sequence)
@@ -72,26 +68,15 @@ $(document).ready(function() {
 	        var n = Math.floor(Math.random()*arrAdjQuestionOptions.length);
 	       
 	        var randomAnswerToCheck=arrAdjQuestionOptions[n];
-	  
-	            
 		          
 	        for(var j = 0; j<arrCurrentQuestionWrongOptions.length; j++) {
 	        	var currentWrongAnswer=arrCurrentQuestionWrongOptions[j];
 	        	
-	        	console.log("QuestionToAsk IS CURRENTLY: " + questionToAsk.answer);
+
 	        	 if ((randomAnswerToCheck===currentWrongAnswer) || (randomAnswerToCheck===questionToAsk.answer)) {	
-	                	
-	                	console.log("DUPLICATE VALUE FOUND Value in array: " + currentWrongAnswer);
 	                    uniqueNum = false;
 	                } 
-	                //new test to remove dups 042217
-	             else if (currentWrongAnswer===questionToAsk.answer) {
-	             	console.log("DUPLICATE IN ARRAY_REAL ANSWER");
-	             	arrCurrentQuestionWrongOptions.splice(j,1);
-	             	console.log("****removed duplicate ****");
-	             	// arrCurrentQuestionWrongOptions.push("Millard Fillmore");
-	             	uniqueNum=false;
-	             }    
+	       
 			}
 
 	    	if (uniqueNum) {
@@ -101,8 +86,7 @@ $(document).ready(function() {
 	        {
 	            i--;
 	        }
-		        		
-	           
+	        		
 	     	wrongAnswer1value=arrCurrentQuestionWrongOptions[0];
 	    	wrongAnswer2value=arrCurrentQuestionWrongOptions[1];
 	    	wrongAnswer3value=arrCurrentQuestionWrongOptions[2];
@@ -130,19 +114,17 @@ $(document).ready(function() {
 				questionAnswerImageTwo=questionToAsk.moneyImage;
 				var questionContent=questionText;
 				var questionAnswers=$("#question");
-				var questionAnswersValue=questionAnswers.html("<h3>" + questionContent+"</h3>");
+				var questionAnswersValue=questionAnswers.html("<h2><strong>" + questionContent+"</strong></h2>");
 				questionAnswers.append(questionAnswersValue);
 					for(m=0;m<arrAdjQuestionOptions.length;m++) { 
 						var checkAdjArrayItem=arrAdjQuestionOptions[m];
 						if(questionRightAnswer===checkAdjArrayItem) {
 								arrAdjQuestionOptions.splice(m,1);
-								console.log("Removed " + questionToAsk.answer + " from adjusted array");
 						}
 					}
 				wrongAnswerOptions();
 				arrCurrentQuestionWrongOptions.push(questionToAsk.answer);
 				arrQuestionOptions=arrAdjQuestionOptions;
-				console.log("Replaced Array: " + arrAdjQuestionOptions);
 				arrRandomSequence=[];
 				getRandomSequence(numberOfAnswers);
 					
@@ -161,10 +143,7 @@ $(document).ready(function() {
 			questionTimerStart();
 			getAnswer();
 
-	
-
 	} 
-
 
 	function getAnswer() {
 			$("#answers").click(function(event){
@@ -182,12 +161,6 @@ $(document).ready(function() {
 							var answerstatusURL="<img src='"+correctAnswerSymbol+"' alt='Correct Answer Symbol' width='300' height='300'>";
 							$("#answer-result").append(clickedValueHTML);
 							$("#answer-result").append(answerstatusURL);
-						
-							// setTimeout(function() {
-							// 	$("#question").empty();
-							// 	$("#answers").empty();
-							// 	$("#answer-result").empty();
-							// },2000);
 							
 						}
 						else {
@@ -199,12 +172,6 @@ $(document).ready(function() {
 							$("#answer-result").append(clickedValueHTML);
 							$("#answer-result").append(moneyURL);
 							$("#answer-result").append(personURL);
-
-								// setTimeout(function() {
-								// 	$("#question").empty();
-								// 	$("#answers").empty();
-								// 	$("#answer-result").empty();
-								// },2000);
 							}
 							if (roundNumber==numberGameQuestions) {
 								arrRoundAnswerOptions=[];
@@ -225,129 +192,107 @@ $(document).ready(function() {
 								askQuestion();
 							},2000);
 							}
-
 			});
 		}
 
-
 	function questionTimerStart() {
-	console.log("TIMER STARTED");
     answerWaitTimer = setTimeout(tenSeconds,10000);
     timer.start();
 	}
 
 	function questionTimerStop() {
-		console.log("TIMER STOPPED*****");
 		timer.stop();
 		timer.reset();
     clearTimeout(answerWaitTimer);
     $("#timerdisplay").empty();
-    // roundNumber++;
 		}
 
 		function tenSeconds(){
-			console.log("TIMED OUT!!!!!!!!!!!!!!!!  " + roundNumber);
 				questionTimerStop();
 				roundNumber++;
 					$("#answers").off("click");
 				
-					
 						notAnswered++;
 						var clickedValueHTML="<h2> You didn't answer! The correct person is  "+arrRoundAnswerOptions[correctAnswerIndex]+"!</h2>";
 						var moneyURL="<img id='imgMoney' src='"+questionAnswerImageTwo+"' alt='Money Two Image'>";
 						var personURL="<img src='"+questionAnswerImageOne+"' alt='Money One Image' width='400' height='400'>";
-							$("#answer-result").append(clickedValueHTML);
-							$("#answer-result").append(moneyURL);
-							$("#answer-result").append(personURL);
+								
+								$("#answer-result").append(clickedValueHTML);
+								$("#answer-result").append(moneyURL);
+								$("#answer-result").append(personURL);
+							
 							setTimeout(function() {
-							$("#question").empty();
-							$("#answers").empty();
-							$("#answer-result").empty();
+								$("#question").empty();
+								$("#answers").empty();
+								$("#answer-result").empty();
 							},2000);
 					
 							if (roundNumber==numberGameQuestions) {
-								console.log("Triggered end of game in timeout routine");
 								arrRoundAnswerOptions=[];
 								setTimeout(function() {
-									// $("#question").empty();
-									// $("#answers").empty();
-									// $("#answer-result").empty();
 								gameEndStats();
 							},3000);
 							}
 
 							else if (roundNumber<numberGameQuestions) {
-								console.log("Triggered continue game in timeout routine");
 								arrRoundAnswerOptions=[];
 								setTimeout(function() {
-								// $("#question").empty();
-								// $("#answers").empty();
-								// $("#answer-result").empty();
 								askQuestion();
 							},2000);
-							
 								
 							}
 		}
 
-		function gameEndStats() {
-			// questionTimerStop();
-			console.log("Triggered gameEndStats");
-			var resultsSection=$("#results");
-			var resultsCorrect=resultsSection.append("<h3>Here's your results after 5 rounds!</h3>");
-			var resultsCorrect=resultsSection.append("<h2>Correct: " + correct+"</h2>");
-			var resultsInCorrect=resultsSection.append("<h2>Incorrect: " + incorrect+"</h2>");
-			var resultsNotAnswered=resultsSection.append("<h2>Unanswered: " + notAnswered+"</h2>");
-				setTimeout(function() {
-								// $("#question").empty();
-								// $("#answers").empty();
-								// $("#answer-result").empty();
+			function gameEndStats() {
+				var resultsSection=$("#results");
+				var resultsCorrect=resultsSection.append("<h3>Here's your results after 5 rounds!</h3>");
+				var resultsCorrect=resultsSection.append("<h2>Correct: " + correct+"</h2>");
+				var resultsInCorrect=resultsSection.append("<h2>Incorrect: " + incorrect+"</h2>");
+				var resultsNotAnswered=resultsSection.append("<h2>Unanswered: " + notAnswered+"</h2>");
+					setTimeout(function() {
 								restartGame();
-							},3000);
-			
-		}
+								},2500);
+				
+			}
 
 			function restartGame() {
 				questionTimerStop();
-				console.log("Triger restartGame");
 				$("#results").append("<h2>Click <em> here </em> to Play Again!!!!!</h2>");
-			$("#results").click(function(event) {
-			// questionTimerStop();	
-			arrQuestions=[];
-			currentWrongAnswer;
-			arrCurrentQuestionWrongOptions=[];
-			sequence;
-			correct=0;
-			incorrect=0;
-			notAnswered=0;
-			arrRandomSequence = [];
-			arrRoundQuestions=[];
-			arrRoundAnswerOptions=[];
-			correctAnswerIndex;
-			questionToAsk;
-			answered=false;
-			answerWaitTimer;
-			roundNumber=0;
-			answerOptions;
-			intervalId;
-			questionAnswerImageOne;
-			questionAnswerImageTwo;
-				$("#results").empty();
-				$("#question").empty();
-				$("#answers").empty();
-				$("#answer-result").empty();
-				console.log("Triggered RESTART gameQuestions");
-				$("#results").off("click");
+				$("#results").click(function(event) {
+
+				arrQuestions=[];
+				currentWrongAnswer;
+				arrCurrentQuestionWrongOptions=[];
+				sequence;
+				correct=0;
+				incorrect=0;
+				notAnswered=0;
+				arrRandomSequence = [];
+				arrRoundQuestions=[];
+				arrRoundAnswerOptions=[];
+				correctAnswerIndex;
+				questionToAsk;
+				answered=false;
+				answerWaitTimer;
+				roundNumber=0;
+				answerOptions;
+				intervalId;
+				questionAnswerImageOne;
+				questionAnswerImageTwo;
+
+					$("#results").empty();
+					$("#question").empty();
+					$("#answers").empty();
+					$("#answer-result").empty();
+					$("#results").off("click");
+					
 				gameQuestions();
-				});
-			
+				});			
 		}
 
 	gameQuestions();
-	console.log("Triggered INITIAL gameQuestions");
 
 });
-
 
 
 var timer = {
