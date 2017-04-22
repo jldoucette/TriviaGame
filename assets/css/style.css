@@ -31,6 +31,12 @@ body {
 	
 }
 
+#timerdisplay {
+	background-color:beige;
+	color:black;
+	
+}
+
 #results {
 	background-color:grey;
 	color:white;

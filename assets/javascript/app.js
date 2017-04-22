@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	var numWrongAnswers=3;
-	var numberGameQuestions=5;
-	var numberTotalQuestions=7;
+	var numberGameQuestions=3;
+	var numberTotalQuestions=14;
 	var numberOfAnswers=4;
 	var arrQuestions=[];
 	var currentWrongAnswer;
@@ -21,6 +21,7 @@ $(document).ready(function() {
 	var answerWaitTimer;
 	var roundNumber=0;
 	var answerOptions;
+	var intervalId;
 	var questionAnswerImageOne;
 	var questionAnswerImageTwo;
 	var correctAnswerSymbol="assets/images/rightanswercheck.gif";
@@ -35,13 +36,20 @@ $(document).ready(function() {
 	
 	var question0=new triviaQuestion("Who is on the US Penny?", "Abraham Lincoln", "assets/images/penny.png", "assets/images/AbrahamLincoln.jpg");
 	var question1=new triviaQuestion("Who is on the US Nickel?", "Thomas Jefferson", "assets/images/nickel.gif", "assets/images/ThomasJefferson.jpg" );
-	var question2=new triviaQuestion("Who is on the US Dime", "Frankin Delano Roosevelt", "assets/images/dime.gif", "assets/images/FDR.jpg" );
+	var question2=new triviaQuestion("Who is on the US Dime?", "Frankin Delano Roosevelt", "assets/images/dime.gif", "assets/images/FDR.jpg" );
 	var question3=new triviaQuestion("Who is on the US Quarter?", "George Washington", "assets/images/quarter.gif", "assets/images/georgewashington.jpg" );
 	var question4=new triviaQuestion("Who is on the US Half-Dollar?", "John F Kennedy", "assets/images/halfdollar.gif", "assets/images/JFK.jpg" );
 	var question5=new triviaQuestion("Who is on the US Silver Dollar?", "Susan B Anthony", "assets/images/sbadollar.png", "assets/images/SusanBAnthony.jpg" );
 	var question6=new triviaQuestion("Who is on the US Golden Dollar?", "Sacagwea", "assets/images/sacagawea-golden-dollar.gif", "assets/images/Sacagwea.jpg" );
+	var question7=new triviaQuestion("Who is on the US Dollar Bill?", "George Washington", "assets/images/dollarbill.gif", "assets/images/georgewashington.jpg" );
+	var question8=new triviaQuestion("Who is on the US Two Dollar Bill?", "Thomas Jefferson", "assets/images/twodollarbill.gif", "assets/images/ThomasJefferson.jpg" );
+	var question9=new triviaQuestion("Who is on the US Five Dollar Bill?", "Abraham Lincoln", "assets/images/fivedollarbill.gif", "assets/images/AbrahamLincoln.jpg" );
+	var question10=new triviaQuestion("Who is on the US Ten Dollar Bill?", "Alexander Hamilton", "assets/images/tendollarbill.gif", "assets/images/AlexanderHamilton.jpg" );
+	var question11=new triviaQuestion("Who is on the US Twenty Dollar Bill?", "Andrew Jackson", "assets/images/twentydollarbill.gif", "assets/images/AndrewJackson.jpg" );
+	var question12=new triviaQuestion("Who is on the US Fifty Dollar Bill?", "Ulysses S Grant", "assets/images/fiftydollarbill.gif", "assets/images/ulyssessgrant.jpg" );
+	var question13=new triviaQuestion("Who is on the US One Hundred Dollar Bill?", "Benjamin Franklin", "assets/images/onehundreddollarbill.gif", "assets/images/benjaminfranklin.jpg" );
 
-	var arrAllQuestions=[question0,question1,question2,question3,question4,question5,question6];
+	var arrAllQuestions=[question0,question1,question2,question3,question4,question5,question6,question7,question8,question9,question10,question11,question12,question13];
 	console.log(arrQuestionOptions.length);
 
 
@@ -72,22 +80,22 @@ $(document).ready(function() {
 	        	// console.log("arrCurrentQuestionWrongOptions length is " + arrCurrentQuestionWrongOptions.length);
 	        	// console.log("arrCurrentQuestionWrongOptions index is " + j);
 	        
-	        	// console.log("arrCurrentQWrong Loop: "+ j);
-	        	// console.log("Value of randomAnswer to Check: " + randomAnswerToCheck + " Value of Current Question Wrong Answer is " + currentWrongAnswer);
-	             if (randomAnswerToCheck===currentWrongAnswer) {	
+	        	console.log("arrCurrentQWrong Loop: "+ j);
+	        	console.log("Value of randomAnswer to Check: " + randomAnswerToCheck + " Value of Current Question Wrong Answer is " + currentWrongAnswer);
+	             if ((randomAnswerToCheck===currentWrongAnswer) || (randomAnswerToCheck===questionToAsk.answer)) {	
 	                	
-	                	// console.log("DUPLICATE VALUE FOUND Value in array: " + currentWrongAnswer);
+	                	console.log("DUPLICATE VALUE FOUND Value in array: " + currentWrongAnswer);
 	                    uniqueNum = false;
-	                    // i--;
+	                    // j--;
 	                }  
 			}
 
 	    	if (uniqueNum) {
-	    		// console.log("value of uniqueNum: " + uniqueNum);
-	    		// console.log("RATC to be pushed to array: " + randomAnswerToCheck);
+	    		console.log("value of uniqueNum: " + uniqueNum);
+	    		console.log("RATC to be pushed to array: " + randomAnswerToCheck);
 	        	arrCurrentQuestionWrongOptions.push(randomAnswerToCheck);
-	        	// console.log("WrongQArray " + arrCurrentQuestionWrongOptions); 
-	        	// console.log("CurrentValue of CurrentQuestion and index " + currentWrongAnswer);          		
+	        	console.log("WrongQArray " + arrCurrentQuestionWrongOptions); 
+	        	console.log("CurrentValue of CurrentQuestion and index " + currentWrongAnswer);          		
 			}
 	        else
 	        {
@@ -111,7 +119,7 @@ $(document).ready(function() {
 	    
 
 	      
-	wrongAnswerOptions();
+	// wrongAnswerOptions();
 
 	function gameQuestions() {
 		// console.log("Start wrongAnswerOptions");
@@ -151,7 +159,8 @@ $(document).ready(function() {
 				// console.log("questionAnswersValue: "+ questionAnswersValue);
 				questionAnswers.append(questionAnswersValue);
 				// console.log("Finished appending to site");
-		
+		//trying wrong question options here april 21
+		wrongAnswerOptions();
 				console.log("answerChoices section Start " + questionToAsk.answer);
 				arrCurrentQuestionWrongOptions.push(questionToAsk.answer);
 				console.log("PUSHED " + questionToAsk.answer);
@@ -196,10 +205,11 @@ $(document).ready(function() {
 				var clickedValue=$(event.target).text();
 				// console.log("Clicked " + clickedValue);
 				 $("#answers").off("click");
+				 		questionTimerStop();
+				 		$("#timerdisplay").empty();
 						if (clickedValue==arrRoundAnswerOptions[correctAnswerIndex]) {
 							
 							console.log("Correct Answer!!! " + clickedValue + arrRoundAnswerOptions[correctAnswerIndex]);
-							questionTimerStop();
 							answered=true;
 							correct++;
 							console.log("Correct Answers: " + correct);
@@ -215,24 +225,24 @@ $(document).ready(function() {
 						}
 						else {
 							console.log("WRONG Answer!!! " + clickedValue + arrRoundAnswerOptions[correctAnswerIndex]);
-							questionTimerStop();
 							answered=true;
 							incorrect++;
 							
 							console.log("Incorrect Answer: " + incorrect);
 							console.log("This is questionAnswerImageTwo "+ questionAnswerImageTwo);
 							var clickedValueHTML="<h2> Wrong! The correct person is  "+arrRoundAnswerOptions[correctAnswerIndex]+"!</h2>";
-							var moneyURL="<img src='"+questionAnswerImageTwo+"' alt='Money Two Image' width='150' height='150'>";
+							var moneyURL="<img src='"+questionAnswerImageTwo+"' alt='Money Two Image' width='400' height='300'>";
 							console.log("Money Image URL: "+ moneyURL);
 							$("#answer-result").append(clickedValueHTML);
 							$("#answer-result").append(moneyURL);
-							var personURL="<img src='"+questionAnswerImageOne+"' alt='Money One Image' width='150' height='150'>";
+							var personURL="<img src='"+questionAnswerImageOne+"' alt='Money One Image' width='400' height='400'>";
 							console.log("Person Image URL: "+ personURL);
 							$("#answer-result").append(personURL);
 
 							setTimeout(function() {
 							$("#answer-result").empty();
-							$("#answer-result").empty();
+							$("#question").empty();
+							$("#answers").empty();
 
 						},3000);
 							}
@@ -242,7 +252,7 @@ $(document).ready(function() {
 									$("#question").empty();
 									$("#answers").empty();
 								arrRoundAnswerOptions=[];
-									wrongAnswerOptions();
+									// wrongAnswerOptions();
 								setTimeout(function() {
 								gameEndStats();
 							},3000);
@@ -252,8 +262,9 @@ $(document).ready(function() {
 									$("#question").empty();
 									$("#answers").empty();
 								arrRoundAnswerOptions=[];
-									wrongAnswerOptions();
+									// wrongAnswerOptions();
 								setTimeout(function() {
+									$("#answer-result").empty();
 								askQuestion();
 							},3000);
 							}
@@ -263,35 +274,40 @@ $(document).ready(function() {
 
 
 	function questionTimerStart() {
-    answerWaitTimer = setTimeout(tenSeconds,5000);
+    answerWaitTimer = setTimeout(tenSeconds,10000);
+    timer.start();
     getAnswer();
 	}
 
 	function questionTimerStop() {
+		timer.stop();
+		timer.reset();
     clearTimeout(answerWaitTimer);
     roundNumber++;
 		}
 
 		function tenSeconds(){
 					$("#answers").off("click");
+					questionTimerStop();
+					$("#timerdisplay").empty();
 					if(answered) {
 						console.log("Answered= " + answered);
 					}
 					else {
 						notAnswered++;
-						roundNumber++;
 						var clickedValueHTML="<h2> You didn't answer! The correct person is  "+arrRoundAnswerOptions[correctAnswerIndex]+"!</h2>";
-						var moneyURL="<img src='"+questionAnswerImageTwo+"' alt='Money Two Image' width='150' height='150'>";
+						var moneyURL="<img src='"+questionAnswerImageTwo+"' alt='Money Two Image' width='400' height='300'>";
 							console.log("Money Image URL: "+ moneyURL);
 							$("#answer-result").append(clickedValueHTML);
 							$("#answer-result").append(moneyURL);
-							var personURL="<img src='"+questionAnswerImageOne+"' alt='Money One Image' width='150' height='150'>";
+							var personURL="<img src='"+questionAnswerImageOne+"' alt='Money One Image' width='400' height='400'>";
 							console.log("Person Image URL: "+ personURL);
 							$("#answer-result").append(personURL);
 							setTimeout(function() {
+							$("#question").empty();
+							$("#answers").empty();
 							$("#answer-result").empty();
-							$("#answer-result").empty();
-
+							
 							},3000);
 						console.log("Answered= " + answered);
 						console.log("Not Answered= " + notAnswered);
@@ -302,8 +318,10 @@ $(document).ready(function() {
 									$("#question").empty();
 									$("#answers").empty();
 								arrRoundAnswerOptions=[];
-									wrongAnswerOptions();
+									// wrongAnswerOptions();
+
 								setTimeout(function() {
+									$("#answer-result").empty();
 								gameEndStats();
 							},3000);
 							}
@@ -311,8 +329,9 @@ $(document).ready(function() {
 								$("#question").empty();
 								$("#answers").empty();
 								arrRoundAnswerOptions=[];
-									wrongAnswerOptions();
+									// wrongAnswerOptions();
 								setTimeout(function() {
+								$("#answer-result").empty();
 								askQuestion();
 							},3000);
 							
@@ -326,38 +345,77 @@ $(document).ready(function() {
 			var resultsCorrect=resultsSection.append("<h2>Correct: " + correct+"</h2>");
 			var resultsInCorrect=resultsSection.append("<h2>Incorrect: " + incorrect+"</h2>");
 			var resultsNotAnswered=resultsSection.append("<h2>Unanswered: " + notAnswered+"</h2>");
+			restartGame();
 			
-				
+		}
 
-			$("#results").html()
+			function restartGame() {
+				$("#results").append("<h2>Click <em> here </em> to Play Again!!!!!</h2>");
+				// $("#results").html();
+			$("#results").click(function(event) {
+
+			arrQuestions=[];
+			currentWrongAnswer;
+			arrCurrentQuestionWrongOptions=[];
+			sequence;
+			correct=0;
+			incorrect=0;
+			notAnswered=0;
+			arrRandomSequence = [];
+			arrRoundQuestions=[];
+			arrRoundAnswerOptions=[];
+			correctAnswerIndex;
+			questionToAsk;
+			answered=false;
+			answerWaitTimer;
+			roundNumber=0;
+			answerOptions;
+			intervalId;
+			questionAnswerImageOne;
+			questionAnswerImageTwo;
+				$("#results").empty();
+				$("#question").empty();
+				$("#answers").empty();
+				$("#answer-result").empty();
+				$("timer-display").empty();
+				timer.stop();
+				timer.reset();
+
+
+				// wrongAnswerOptions();
+				gameQuestions();
+				});
+		
+			
+	
 		}
 
 
 	gameQuestions();
+
 });
 
-var intervalId;
-
-//  Our stopwatch object.
 var timer = {
 
-  time: 10,
+  time: 11,
 
 
   reset: function() {
 
-    timer.time = 0;
+    timer.time = 11;
 
-    $("#timerdisplay").html("00:10");
-    //  TODO: Change the "display" div to "00:00."
- 
+    $("#timerdisplay").empty();
 
+  },
+
+   stop: function() {
+
+    clearInterval(intervalId);
   },
 
   start: function() {
 
-    //  TODO: Use setInterval to start the count here.
-    intervalId=setInterval(timer.count,-1000);
+    intervalId=setInterval(timer.count,1000);
   
   },
 
@@ -365,14 +423,7 @@ var timer = {
   count: function() {
     timer.time--;
     var timeResult=timer.timeConverter(timer.time);
-    $("#timerdisplay").html(timeResult);
-    //  TODO: increment time by 1, remember we cant use "this" here.
-
-    //  TODO: Get the current time, pass that into the stopwatch.timeConverter function,
-    //        and save the result in a variable.
-
-    //  TODO: Use the variable you just created to show the converted time in the "display" div.
-
+    $("#timerdisplay").html("<h2>Time Remaining to Answer: " +timeResult+"<h2>");
   },
 
 
@@ -397,6 +448,7 @@ var timer = {
     return minutes + ":" + seconds;
   }
 }
+
 
 
 
