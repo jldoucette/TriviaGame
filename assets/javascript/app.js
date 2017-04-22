@@ -21,6 +21,9 @@ $(document).ready(function() {
 	var answerWaitTimer;
 	var roundNumber=0;
 	var answerOptions;
+	var questionAnswerImageOne;
+	var questionAnswerImageTwo;
+	var correctAnswerSymbol="assets/images/rightanswercheck.gif";
 	
 
 		function triviaQuestion(question,answer,moneyImage,personImage) {
@@ -30,13 +33,13 @@ $(document).ready(function() {
 		this.personImage=personImage;
 		}
 	
-	var question0=new triviaQuestion("Who is on the US Penny?", "Abraham Lincoln", "/assets/images/penny.png", "/assets/images/AbrahamLincoln.jpg");
-	var question1=new triviaQuestion("Who is on the US Nickel?", "Thomas Jefferson", "/assets/images/nickel.png", "/assets/images/ThomasJefferson.jpg" );
-	var question2=new triviaQuestion("Who is on the US Dime", "Frankin Delano Roosevelt", "/assets/images/dime.gif", "/assets/images/FDR.jpg" );
-	var question3=new triviaQuestion("Who is on the US Quarter?", "George Washington", "/assets/images/quarter.gif", "/assets/images/georgewashington.jpg" );
-	var question4=new triviaQuestion("Who is on the US Half-Dollar?", "John F Kennedy", "/assets/images/halfdollar.gif", "/assets/images/JFK.jpg" );
-	var question5=new triviaQuestion("Who is on the US Silver Dollar?", "Susan B Anthony", "/assets/images/sbadollar.png", "/assets/images/SusanBAnthony.jpg" );
-	var question6=new triviaQuestion("Who is on the US Golden Dollar?", "Sacagwea", "/assets/images/sacagawea-golden-dollar.gif", "/assets/images/Sacagwea.jpg" );
+	var question0=new triviaQuestion("Who is on the US Penny?", "Abraham Lincoln", "assets/images/penny.png", "assets/images/AbrahamLincoln.jpg");
+	var question1=new triviaQuestion("Who is on the US Nickel?", "Thomas Jefferson", "assets/images/nickel.gif", "assets/images/ThomasJefferson.jpg" );
+	var question2=new triviaQuestion("Who is on the US Dime", "Frankin Delano Roosevelt", "assets/images/dime.gif", "assets/images/FDR.jpg" );
+	var question3=new triviaQuestion("Who is on the US Quarter?", "George Washington", "assets/images/quarter.gif", "assets/images/georgewashington.jpg" );
+	var question4=new triviaQuestion("Who is on the US Half-Dollar?", "John F Kennedy", "assets/images/halfdollar.gif", "assets/images/JFK.jpg" );
+	var question5=new triviaQuestion("Who is on the US Silver Dollar?", "Susan B Anthony", "assets/images/sbadollar.png", "assets/images/SusanBAnthony.jpg" );
+	var question6=new triviaQuestion("Who is on the US Golden Dollar?", "Sacagwea", "assets/images/sacagawea-golden-dollar.gif", "assets/images/Sacagwea.jpg" );
 
 	var arrAllQuestions=[question0,question1,question2,question3,question4,question5,question6];
 	console.log(arrQuestionOptions.length);
@@ -133,6 +136,11 @@ $(document).ready(function() {
 				questionToAsk=arrAllQuestions[questionIndex];
 				console.log(questionToAsk);
 				var questionText=questionToAsk.question;
+				questionAnswerImageOne=questionToAsk.personImage;
+				questionAnswerImageTwo=questionToAsk.moneyImage;
+				console.log("ImageOne "+questionAnswerImageOne);
+				console.log("ImageTwo "+questionAnswerImageTwo);
+
 				// console.log(questionText);
 				var questionContent=questionText;
 				console.log("QuestionContent: " + questionContent);
@@ -182,6 +190,7 @@ $(document).ready(function() {
 // getAnswer();
 
 	function getAnswer() {
+		console.log("This is questionAnswerImageTwo before on click  "+ questionAnswerImageTwo);
 			$("#answers").click(function(event){
 			
 				var clickedValue=$(event.target).text();
@@ -193,29 +202,60 @@ $(document).ready(function() {
 							questionTimerStop();
 							answered=true;
 							correct++;
-						
-
 							console.log("Correct Answers: " + correct);
-							}
-
+							var clickedValueHTML="<h2> Correct it is "+arrRoundAnswerOptions[correctAnswerIndex]+"!</h2>";
+							var answerstatusURL="<img src='"+correctAnswerSymbol+"' alt='Correct Answer Symbol' width='300' height='300'>";
+							console.log("Correct Image URL: "+ answerstatusURL);
+							$("#answer-result").append(clickedValueHTML);
+							$("#answer-result").append(answerstatusURL);
+						
+							setTimeout(function() {$("#answer-result").empty();
+						},2000);
+							
+						}
 						else {
 							console.log("WRONG Answer!!! " + clickedValue + arrRoundAnswerOptions[correctAnswerIndex]);
 							questionTimerStop();
 							answered=true;
 							incorrect++;
-					
+							
 							console.log("Incorrect Answer: " + incorrect);
+							console.log("This is questionAnswerImageTwo "+ questionAnswerImageTwo);
+							var clickedValueHTML="<h2> Wrong! The correct person is  "+arrRoundAnswerOptions[correctAnswerIndex]+"!</h2>";
+							var moneyURL="<img src='"+questionAnswerImageTwo+"' alt='Money Two Image' width='150' height='150'>";
+							console.log("Money Image URL: "+ moneyURL);
+							$("#answer-result").append(clickedValueHTML);
+							$("#answer-result").append(moneyURL);
+							var personURL="<img src='"+questionAnswerImageOne+"' alt='Money One Image' width='150' height='150'>";
+							console.log("Person Image URL: "+ personURL);
+							$("#answer-result").append(personURL);
+
+							setTimeout(function() {
+							$("#answer-result").empty();
+							$("#answer-result").empty();
+
+						},3000);
 							}
 							// console.log("RoundNumber before if check " + roundNumber + " numberGameQuestions" + numberGameQuestions);
 							if (roundNumber==numberGameQuestions) {
 								console.log("GAME OVER");
+									$("#question").empty();
+									$("#answers").empty();
+								arrRoundAnswerOptions=[];
+									wrongAnswerOptions();
+								setTimeout(function() {
 								gameEndStats();
+							},3000);
+								
 							}
 							else {
-								$("#answers").empty();
+									$("#question").empty();
+									$("#answers").empty();
 								arrRoundAnswerOptions=[];
-								wrongAnswerOptions();
+									wrongAnswerOptions();
+								setTimeout(function() {
 								askQuestion();
+							},3000);
 							}
 
 			});
@@ -240,27 +280,52 @@ $(document).ready(function() {
 					else {
 						notAnswered++;
 						roundNumber++;
+						var clickedValueHTML="<h2> You didn't answer! The correct person is  "+arrRoundAnswerOptions[correctAnswerIndex]+"!</h2>";
+						var moneyURL="<img src='"+questionAnswerImageTwo+"' alt='Money Two Image' width='150' height='150'>";
+							console.log("Money Image URL: "+ moneyURL);
+							$("#answer-result").append(clickedValueHTML);
+							$("#answer-result").append(moneyURL);
+							var personURL="<img src='"+questionAnswerImageOne+"' alt='Money One Image' width='150' height='150'>";
+							console.log("Person Image URL: "+ personURL);
+							$("#answer-result").append(personURL);
+							setTimeout(function() {
+							$("#answer-result").empty();
+							$("#answer-result").empty();
+
+							},3000);
 						console.log("Answered= " + answered);
 						console.log("Not Answered= " + notAnswered);
 					}
 						// console.log("RoundNumber before if check " + roundNumber + " numberGameQuestions" + numberGameQuestions);
 							if (roundNumber==numberGameQuestions) {
-								console.log("GAME OVER");
+									console.log("GAME OVER");
+									$("#question").empty();
+									$("#answers").empty();
+								arrRoundAnswerOptions=[];
+									wrongAnswerOptions();
+								setTimeout(function() {
 								gameEndStats();
+							},3000);
 							}
 							else {
+								$("#question").empty();
 								$("#answers").empty();
 								arrRoundAnswerOptions=[];
-								wrongAnswerOptions();
+									wrongAnswerOptions();
+								setTimeout(function() {
 								askQuestion();
+							},3000);
+							
+								
 							}
 		}
 
 		function gameEndStats() {
 			var resultsSection=$("#results");
-			var resultsCorrect=resultsSection.append("<h3>Correct: " + correct+"</h3>");
-			var resultsInCorrect=resultsSection.append("<h3>Incorrect: " + incorrect+"</h3>");
-			var resultsNotAnswered=resultsSection.append("<h3>Unanswered: " + notAnswered+"</h3>");
+			var resultsCorrect=resultsSection.append("<h3>Here's your results after 5 rounds!</h3>");
+			var resultsCorrect=resultsSection.append("<h2>Correct: " + correct+"</h2>");
+			var resultsInCorrect=resultsSection.append("<h2>Incorrect: " + incorrect+"</h2>");
+			var resultsNotAnswered=resultsSection.append("<h2>Unanswered: " + notAnswered+"</h2>");
 			
 				
 

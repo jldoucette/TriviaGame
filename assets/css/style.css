@@ -25,8 +25,14 @@ body {
 	text-align:center;
 }
 
+#answer-result {
+	background-color:grey;
+	color:white;
+	
+}
+
 #results {
 	background-color:grey;
 	color:white;
-	font-size:300%;
+
 }
